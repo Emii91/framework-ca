@@ -1,26 +1,9 @@
-.card-container {
-  display: inline-block;
-  position: relative;
-  left: 20px;
-  right: 20px;
-  margin: 20px;
-}
-
 .product-card {
   display: inline-block;
   position: relative;
   left: 20px;
   right: 20px;
   margin: 20px;
-}
-
-@media (max-width: 600px) {
-  .card-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
 }
 
 .detail-page {
@@ -66,10 +49,6 @@ img.detail-img {
   .detail-page {
     padding: 0px;
     width: auto;
-  }
-  .card-container {
-    left: 0;
-    right: 0;
   }
 }
 
