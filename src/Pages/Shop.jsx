@@ -47,7 +47,7 @@ const Shop = () => {
 
   useEffect(() => {
     handleSearch();
-  }, [searchTerm]);
+  }, [searchTerm, handleSearch]);
 
   return (
     <div>
