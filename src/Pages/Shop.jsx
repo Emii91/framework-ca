@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Item from "../Components/Item/Item";
 import Banner from "../Components/Banner/Banner";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,19 @@ const Shop = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const handleSearch = useCallback(() => {
+    if (searchTerm.length >= 2) {
+      const results = items.filter((item) =>
+        item.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setSearchResults(results);
+      setError(results.length === 0 ? "No results found." : "");
+    } else {
+      setSearchResults([]);
+      setError("");
+    }
+  }, [searchTerm, items]);
+
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -18,7 +31,7 @@ const Shop = () => {
         );
         const data = await response.json();
         console.log("Fetched items:", data);
-        setItems(data);
+        setItems((prevItems) => [...prevItems, ...data]);
       } catch (error) {
         console.error("Error fetching items:", error);
       }
@@ -27,27 +40,9 @@ const Shop = () => {
     fetchItems();
   }, []);
 
-  const handleSearch = () => {
-    if (searchTerm.length >= 2) {
-      const results = items.filter((item) =>
-        item.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setSearchResults(results);
-
-      setError(results.length === 0 ? "No results found." : "");
-    } else {
-      setSearchResults([]);
-      setError("");
-    }
-  };
-
   const handleItemClick = (productId) => {
     navigate(`/product/${productId}`);
   };
-
-  useEffect(() => {
-    handleSearch();
-  }, [searchTerm, handleSearch]);
 
   return (
     <div>
@@ -66,18 +61,18 @@ const Shop = () => {
         {searchResults.length > 0 ? (
           <div>
             <h2>Search Results</h2>
-            {searchResults.map((item) => (
+            {searchResults.map((item, index) => (
               <Item
-                key={item.id}
+                key={`search-${index}`}
                 item={item}
                 onClick={() => handleItemClick(item.id)}
               />
             ))}
           </div>
         ) : (
-          items.map((item) => (
+          items.map((item, index) => (
             <Item
-              key={item.id}
+              key={`regular-${index}`}
               item={item}
               onClick={() => handleItemClick(item.id)}
             />
