@@ -32,7 +32,7 @@ const Product = () => {
     };
 
     fetchProducts();
-  }, [productId]);
+  }, [productId, selectedProduct]);
 
   const handleAddToCart = (product) => {
     dispatch({ type: "ADD_TO_CART", payload: product });
